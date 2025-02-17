@@ -38,7 +38,8 @@ pico_sdk_init()
 add_executable(BitDogAcademy
         BitDogAcademy.c
         inc/ssd1306.c
-        inc/neopixel.c)
+        inc/neopixel.c
+        inc/buzzer.c)
 
 pico_set_program_name(BitDogAcademy "BitDogAcademy")
 pico_set_program_version(BitDogAcademy "0.1")
@@ -56,6 +57,7 @@ target_link_libraries(BitDogAcademy
         hardware_i2c
         hardware_pio
         hardware_clocks
+        hardware_pwm
         )
 
 # Add the standard include files to the build

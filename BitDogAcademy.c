@@ -15,6 +15,9 @@
 // Biblioteca para o Neopixel - Matrix de LEDs RGB
 #include "inc/neopixel.h"
 
+// Biblioteca para o Buzzer
+#include "buzzer.h"
+
 // Pinagem/Configuração
 
 // I2C display OLED
@@ -24,6 +27,9 @@
 
 // Neopixel - Matriz de LEDs RGB
 #define LED_PIN 7
+
+// Buzzer
+#define BUZZER_PIN 21
 
 void test_ssd1306(ssd1306_t *disp) {
     const uint8_t *fonts[4]= {acme_font, bubblesstandard_font, crackers_font, BMSPA_font};
@@ -68,17 +74,32 @@ void test_np() {
     }
 }
 
+void test_buzzer() {
+    buzzer_beep(8000, 100);
+    sleep_ms(50);
+    buzzer_beep(8000, 100);
+    sleep_ms(150);
+    buzzer_beep(8000, 100);
+    sleep_ms(50);
+    buzzer_beep(10000, 100);
+}
+
 int main() {
     stdio_init_all();
 
+    // Initialization
     ssd1306_t disp;
     disp.external_vcc = false;
     ssd1306_init(&disp, 128, 64, 0x3C, I2C_PORT, I2C_SDA, I2C_SCL);
 
     npInit(LED_PIN);
 
+    buzzer_init(BUZZER_PIN);
+
+    // Tests
     test_ssd1306(&disp);
     test_np();
+    test_buzzer();
 
     return 0;
 }
