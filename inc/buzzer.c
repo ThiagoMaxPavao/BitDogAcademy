@@ -16,7 +16,7 @@ void buzzer_beep(uint frequency, uint duration_ms) {
     pwm_config_set_clkdiv(&config, clock_div);
     
     pwm_init(slice_num, &config, true); // Initialize PWM with config
-    pwm_set_gpio_level(pin, 2048); // Set duty cycle to 50%
+    pwm_set_gpio_level(pin, BUZZER_VOLUME * 2048); // Set duty cycle to 50% * BUZZER_VOLUME
 
     sleep_ms(duration_ms); // Wait for duration
 

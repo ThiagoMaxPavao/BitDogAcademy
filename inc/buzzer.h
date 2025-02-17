@@ -5,6 +5,8 @@
 #include "hardware/pwm.h"
 #include "hardware/clocks.h"
 
+#define BUZZER_VOLUME 0.2f
+
 // Initialize the pin for pwm
 void buzzer_init(uint pin);
 
