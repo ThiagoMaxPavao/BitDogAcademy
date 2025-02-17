@@ -18,6 +18,9 @@
 // Biblioteca para o Buzzer
 #include "buzzer.h"
 
+// Biblioteca para o Joystick
+#include "joystick.h"
+
 // Pinagem/Configuração
 
 // I2C display OLED
@@ -30,6 +33,10 @@
 
 // Buzzer
 #define BUZZER_PIN 21
+
+// Joystick
+#define JOY_X_PIN 26
+#define JOY_Y_PIN 27
 
 void test_ssd1306(ssd1306_t *disp) {
     const uint8_t *fonts[4]= {acme_font, bubblesstandard_font, crackers_font, BMSPA_font};
@@ -84,6 +91,18 @@ void test_buzzer() {
     buzzer_beep(10000, 100);
 }
 
+void test_joystick() {
+    float x, y, r, angle;
+
+    while(1) {
+        joystick_get_XY(&x, &y);
+        joystick_get_RA(&r, &angle);
+
+        printf("X: %.2f, Y: %.2f, R: %.2f, angle: %.2f\n", x, y, r, angle);
+        sleep_ms(100);
+    }
+}
+
 int main() {
     stdio_init_all();
 
@@ -96,10 +115,13 @@ int main() {
 
     buzzer_init(BUZZER_PIN);
 
+    joystick_init(JOY_X_PIN, JOY_Y_PIN);
+
     // Tests
     test_ssd1306(&disp);
     test_np();
     test_buzzer();
+    test_joystick();
 
     return 0;
 }

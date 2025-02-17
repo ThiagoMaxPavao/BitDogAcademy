@@ -39,6 +39,8 @@
     "files.associations": {
         "bmspa_font.h": "c",
         "neopixel.h": "c",
-        "clocks.h": "c"
+        "clocks.h": "c",
+        "joystick.h": "c",
+        "math.h": "c"
     }
 }
