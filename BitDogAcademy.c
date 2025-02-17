@@ -62,23 +62,23 @@ void test_ssd1306(ssd1306_t *disp) {
 }
 
 void test_np() {
-    for(int i = 0; i < 3; i++) {
-        for(int brilho = 0; brilho < 30; brilho++) {
-            npSetLEDbyXY(0, 0, brilho, 0, 0);
-            npSetLEDbyXY(2, 2, 0, brilho, 0);
-            npSetLEDbyXY(4, 4, 0, 0, brilho);
-            npWrite();
-            sleep_ms(25);
+    uint a = 0;
+
+    while(a < 360*2) {
+        for(uint x = 0; x < 5; x++) {
+            for(uint y = 0; y < 5; y++) {
+                int shift = 25*(x-y);
+                np_set_led_hsl_xy(x, y, ((a+shift) % 360) / 360.0, 1, 0.5);
+                np_write();
+            }
         }
 
-        for(int brilho = 30; brilho >= 0; brilho--) {
-            npSetLEDbyXY(0, 0, brilho, 0, 0);
-            npSetLEDbyXY(2, 2, 0, brilho, 0);
-            npSetLEDbyXY(4, 4, 0, 0, brilho);
-            npWrite();
-            sleep_ms(25);
-        }
+        a += 10;
+        sleep_ms(30);
     }
+
+    np_clear();
+    np_write();
 }
 
 void test_buzzer() {
@@ -111,7 +111,7 @@ int main() {
     disp.external_vcc = false;
     ssd1306_init(&disp, 128, 64, 0x3C, I2C_PORT, I2C_SDA, I2C_SCL);
 
-    npInit(LED_PIN);
+    np_init(LED_PIN);
 
     buzzer_init(BUZZER_PIN);
 
