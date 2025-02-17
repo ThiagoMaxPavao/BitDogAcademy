@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(BitDogAcademy BitDogAcademy.c )
+add_executable(BitDogAcademy BitDogAcademy.c inc/ssd1306.c)
 
 pico_set_program_name(BitDogAcademy "BitDogAcademy")
 pico_set_program_version(BitDogAcademy "0.1")
@@ -46,11 +46,14 @@ pico_enable_stdio_usb(BitDogAcademy 1)
 
 # Add the standard library to the build
 target_link_libraries(BitDogAcademy
-        pico_stdlib)
+        pico_stdlib
+        hardware_i2c
+        )
 
 # Add the standard include files to the build
 target_include_directories(BitDogAcademy PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/inc # Include directory
 )
 
 # Add any user requested libraries
