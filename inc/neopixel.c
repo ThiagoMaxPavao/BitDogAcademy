@@ -36,11 +36,18 @@ void npInit(uint pin) {
     npWrite();
 }
 
+uint8_t reverseBits(uint8_t byte) {
+    byte = (byte & 0xF0) >> 4 | (byte & 0x0F) << 4;
+    byte = (byte & 0xCC) >> 2 | (byte & 0x33) << 2;
+    byte = (byte & 0xAA) >> 1 | (byte & 0x55) << 1;
+    return byte;
+}
+
 void npSetLED(uint index, uint8_t r, uint8_t g, uint8_t b) {
     if (index < LED_COUNT) {
-        leds[index].R = r;
-        leds[index].G = g;
-        leds[index].B = b;
+        leds[index].R = reverseBits(r);
+        leds[index].G = reverseBits(g);
+        leds[index].B = reverseBits(b);
     }
 }
 
@@ -50,18 +57,11 @@ void npClear() {
     }
 }
 
-uint8_t reverseBits(uint8_t byte) {
-    byte = (byte & 0xF0) >> 4 | (byte & 0x0F) << 4;
-    byte = (byte & 0xCC) >> 2 | (byte & 0x33) << 2;
-    byte = (byte & 0xAA) >> 1 | (byte & 0x55) << 1;
-    return byte;
-}
-
 void npWrite() {
     for (uint i = 0; i < LED_COUNT; ++i) {
-        pio_sm_put_blocking(np_pio, sm, reverseBits(leds[i].G));
-        pio_sm_put_blocking(np_pio, sm, reverseBits(leds[i].R));
-        pio_sm_put_blocking(np_pio, sm, reverseBits(leds[i].B));
+        pio_sm_put_blocking(np_pio, sm, leds[i].G);
+        pio_sm_put_blocking(np_pio, sm, leds[i].R);
+        pio_sm_put_blocking(np_pio, sm, leds[i].B);
     }
     sleep_us(100);
 }
