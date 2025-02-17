@@ -25,22 +25,6 @@
 // Neopixel - Matriz de LEDs RGB
 #define LED_PIN 7
 
-void display_init(ssd1306_t *disp) {
-    disp->external_vcc = false;
-    ssd1306_init(disp, 128, 64, 0x3C, I2C_PORT);
-    ssd1306_clear(disp);
-    ssd1306_show(disp);
-}
-
-void setup_pins() {
-    // display OLED
-    i2c_init(I2C_PORT, 400000);
-    gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
-    gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);
-    gpio_pull_up(I2C_SDA);
-    gpio_pull_up(I2C_SCL);
-}
-
 void test_ssd1306(ssd1306_t *disp) {
     const uint8_t *fonts[4]= {acme_font, bubblesstandard_font, crackers_font, BMSPA_font};
     char buffer[20]; // Buffer para a string formatada
@@ -87,15 +71,13 @@ void test_np() {
 int main() {
     stdio_init_all();
 
-    setup_pins();
-
     ssd1306_t disp;
-    display_init(&disp);
-    test_ssd1306(&disp);
+    disp.external_vcc = false;
+    ssd1306_init(&disp, 128, 64, 0x3C, I2C_PORT, I2C_SDA, I2C_SCL);
 
     npInit(LED_PIN);
-    npClear();
-    npWrite();
+
+    test_ssd1306(&disp);
     test_np();
 
     return 0;

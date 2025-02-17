@@ -58,7 +58,18 @@ inline static void ssd1306_write(ssd1306_t *p, uint8_t val) {
     fancy_write(p->i2c_i, p->address, d, 2, "ssd1306_write");
 }
 
-bool ssd1306_init(ssd1306_t *p, uint16_t width, uint16_t height, uint8_t address, i2c_inst_t *i2c_instance) {
+void setupPins(i2c_inst_t *i2c_instance, uint gpio_sda, uint gpio_scl) {
+    // display OLED
+    i2c_init(i2c_instance, 400000);
+    gpio_set_function(gpio_sda, GPIO_FUNC_I2C);
+    gpio_set_function(gpio_scl, GPIO_FUNC_I2C);
+    gpio_pull_up(gpio_sda);
+    gpio_pull_up(gpio_scl);
+}
+
+bool ssd1306_init(ssd1306_t *p, uint16_t width, uint16_t height, uint8_t address, i2c_inst_t *i2c_instance, uint gpio_sda, uint gpio_scl) {
+    setupPins(i2c_instance, gpio_sda, gpio_scl);
+    
     p->width=width;
     p->height=height;
     p->pages=height/8;
@@ -111,6 +122,9 @@ bool ssd1306_init(ssd1306_t *p, uint16_t width, uint16_t height, uint8_t address
 
     for(size_t i=0; i<sizeof(cmds); ++i)
         ssd1306_write(p, cmds[i]);
+
+    ssd1306_clear(p);
+    ssd1306_show(p);
 
     return true;
 }

@@ -78,12 +78,14 @@ typedef struct {
 *	@param[in] height : heigth of display
 *	@param[in] address : i2c address of display
 *	@param[in] i2c_instance : instance of i2c connection
+*	@param[in] gpio_sda : SDA GPIO pin
+*	@param[in] gpio_scl : SCL GPIO pin
 *	
 * 	@return bool.
 *	@retval true for Success
 *	@retval false if initialization failed
 */
-bool ssd1306_init(ssd1306_t *p, uint16_t width, uint16_t height, uint8_t address, i2c_inst_t *i2c_instance);
+bool ssd1306_init(ssd1306_t *p, uint16_t width, uint16_t height, uint8_t address, i2c_inst_t *i2c_instance, uint gpio_sda, uint gpio_scl);
 
 /**
 *	@brief deinitialize display
