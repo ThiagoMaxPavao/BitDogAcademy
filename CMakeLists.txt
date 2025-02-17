@@ -35,10 +35,16 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(BitDogAcademy BitDogAcademy.c inc/ssd1306.c)
+add_executable(BitDogAcademy
+        BitDogAcademy.c
+        inc/ssd1306.c
+        inc/neopixel.c)
 
 pico_set_program_name(BitDogAcademy "BitDogAcademy")
 pico_set_program_version(BitDogAcademy "0.1")
+
+# Generate PIO header
+pico_generate_pio_header(BitDogAcademy ${CMAKE_CURRENT_LIST_DIR}/ws2818b.pio)
 
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(BitDogAcademy 0)
@@ -48,6 +54,8 @@ pico_enable_stdio_usb(BitDogAcademy 1)
 target_link_libraries(BitDogAcademy
         pico_stdlib
         hardware_i2c
+        hardware_pio
+        hardware_clocks
         )
 
 # Add the standard include files to the build
@@ -58,7 +66,6 @@ target_include_directories(BitDogAcademy PRIVATE
 
 # Add any user requested libraries
 target_link_libraries(BitDogAcademy 
-        
         )
 
 pico_add_extra_outputs(BitDogAcademy)

@@ -12,13 +12,18 @@
 #include "inc/crackers_font.h"
 #include "inc/BMSPA_font.h"
 
-// Pinagem
+// Biblioteca para o Neopixel - Matrix de LEDs RGB
+#include "inc/neopixel.h"
+
+// Pinagem/Configuração
 
 // I2C display OLED
 #define I2C_PORT i2c1
 #define I2C_SDA 14
 #define I2C_SCL 15
 
+// Neopixel - Matriz de LEDs RGB
+#define LED_PIN 7
 
 void display_init(ssd1306_t *disp) {
     disp->external_vcc = false;
@@ -59,6 +64,26 @@ void test_ssd1306(ssd1306_t *disp) {
     ssd1306_show(disp);
 }
 
+void test_np() {
+    for(int i = 0; i < 3; i++) {
+        for(int brilho = 0; brilho < 30; brilho++) {
+            npSetLEDbyXY(0, 0, brilho, 0, 0);
+            npSetLEDbyXY(2, 2, 0, brilho, 0);
+            npSetLEDbyXY(4, 4, 0, 0, brilho);
+            npWrite();
+            sleep_ms(25);
+        }
+
+        for(int brilho = 30; brilho >= 0; brilho--) {
+            npSetLEDbyXY(0, 0, brilho, 0, 0);
+            npSetLEDbyXY(2, 2, 0, brilho, 0);
+            npSetLEDbyXY(4, 4, 0, 0, brilho);
+            npWrite();
+            sleep_ms(25);
+        }
+    }
+}
+
 int main() {
     stdio_init_all();
 
@@ -67,6 +92,11 @@ int main() {
     ssd1306_t disp;
     display_init(&disp);
     test_ssd1306(&disp);
+
+    npInit(LED_PIN);
+    npClear();
+    npWrite();
+    test_np();
 
     return 0;
 }
