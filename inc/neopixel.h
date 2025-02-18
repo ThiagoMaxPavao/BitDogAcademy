@@ -10,7 +10,7 @@
 #include "pico/stdlib.h"
 
 #define LED_COUNT 25
-#define MAX_BRIGHTNESS 10
+#define MAX_BRIGHTNESS 30
 
 // RGB values range from 0 to 255
 // HSL values: Hue (0.0 - 1.0), Saturation (0.0 - 1.0), Lightness (0.0 - 1.0)
