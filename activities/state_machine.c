@@ -38,6 +38,7 @@ const uint n_activities = 3;
 // Variáveis estáticas
 static int selected_subject = 0;
 static int selected_activity = 0;
+static int current_activity_tutorial_page = 0;
 
 // Estado atual
 static state_t current_state = STATE_INIT;
@@ -57,6 +58,18 @@ void state_machine_button_A_callback() {
         case STATE_SELECT_ACTIVITY_WAIT:
         current_state = STATE_DRAW_SELECT_SUBJECT;
         success_sound();
+        break;
+
+        case STATE_ACTIVITY_TUTORIAL_PAGE_WAIT:
+        if(current_activity_tutorial_page == 0) {
+            current_state = STATE_DRAW_SELECT_ACTIVITY;
+            success_sound();
+        }
+        else {
+            current_activity_tutorial_page--;
+            current_state = STATE_DRAW_ACTIVITY_TUTORIAL_PAGE;
+            success_sound();
+        }
         break;
 
         default:
@@ -85,6 +98,22 @@ void state_machine_button_B_callback() {
         else {
             error_sound();
         }
+        break;
+
+        case STATE_SELECT_ACTIVITY_WAIT:
+        if(selected_activity == 0) {
+            current_state = STATE_DRAW_ACTIVITY_TUTORIAL_PAGE;
+            success_sound();
+        }
+        else {
+            error_sound();
+        }
+        break;
+
+        case STATE_ACTIVITY_TUTORIAL_PAGE_WAIT:
+        current_activity_tutorial_page++;
+        current_state = STATE_DRAW_ACTIVITY_TUTORIAL_PAGE;
+        success_sound();
         break;
 
         default:
@@ -293,6 +322,17 @@ void state_select_activity_wait() {
     sleep_ms(20);
 }
 
+void state_draw_activity_tutorial_page() {
+    int status;
+
+    status = math_integer_division_draw_tutorial_page(current_activity_tutorial_page);
+
+    if(status)
+        current_state = STATE_ACTIVITY_TUTORIAL_PAGE_WAIT;
+    else
+        current_state = STATE_ACTIVITY_SETUP;
+}
+
 void run_state_machine() {
     switch (current_state) {
         case STATE_INIT:
@@ -329,6 +369,10 @@ void run_state_machine() {
 
         case STATE_SELECT_ACTIVITY_WAIT:
         state_select_activity_wait();
+        break;
+
+        case STATE_DRAW_ACTIVITY_TUTORIAL_PAGE:
+        state_draw_activity_tutorial_page();
         break;
 
         default:
