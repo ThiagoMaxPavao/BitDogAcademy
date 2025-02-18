@@ -53,6 +53,10 @@
         "string.h": "c",
         "math_integer_division.h": "c",
         "util.h": "c",
-        "tests.h": "c"
+        "tests.h": "c",
+        "state_machine.h": "c",
+        "bubblesstandard_font.h": "c",
+        "acme_5_outlines_font.h": "c",
+        "random": "c"
     }
 }

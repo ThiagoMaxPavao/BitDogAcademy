@@ -44,7 +44,12 @@ add_executable(BitDogAcademy
         inc/buttons.c
         inc/tests.c
         inc/util.c
-        activities/math_integer_division.c)
+        activities/math_integer_division.c
+        activities/state_machine.c
+        fonts/acme_5_outlines_font.c
+        fonts/BMSPA_font.c
+        fonts/bubblesstandard_font.c
+        fonts/crackers_font.c)
 
 pico_set_program_name(BitDogAcademy "BitDogAcademy")
 pico_set_program_version(BitDogAcademy "0.1")
@@ -71,6 +76,7 @@ target_include_directories(BitDogAcademy PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/inc # Include directory
         ${CMAKE_CURRENT_LIST_DIR}/activities # Activities directory
+        ${CMAKE_CURRENT_LIST_DIR}/fonts # Fonts directory
 )
 
 # Add any user requested libraries
