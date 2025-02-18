@@ -40,7 +40,11 @@ add_executable(BitDogAcademy
         inc/ssd1306.c
         inc/neopixel.c
         inc/buzzer.c
-        inc/joystick.c)
+        inc/joystick.c
+        inc/buttons.c
+        inc/tests.c
+        inc/util.c
+        activities/math_integer_division.c)
 
 pico_set_program_name(BitDogAcademy "BitDogAcademy")
 pico_set_program_version(BitDogAcademy "0.1")
@@ -66,6 +70,7 @@ target_link_libraries(BitDogAcademy
 target_include_directories(BitDogAcademy PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/inc # Include directory
+        ${CMAKE_CURRENT_LIST_DIR}/activities # Activities directory
 )
 
 # Add any user requested libraries
