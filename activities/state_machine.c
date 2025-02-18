@@ -130,6 +130,12 @@ void state_machine_button_joystick_callback() {
     }
 }
 
+void state_machine_configure_button_callbacks() {
+    set_button_A_callback(state_machine_button_A_callback);
+    set_button_B_callback(state_machine_button_B_callback);
+    set_button_joystick_callback(state_machine_button_joystick_callback);
+}
+
 void state_init() {
     // Inicializa os periféricos
     disp.external_vcc = false;
@@ -144,9 +150,7 @@ void state_init() {
     buttons_init(BUTTON_A, BUTTON_B, BUTTON_JOYSTICK); // Botões
 
     // Configura callbacks dos botões
-    set_button_A_callback(state_machine_button_A_callback);
-    set_button_B_callback(state_machine_button_B_callback);
-    set_button_joystick_callback(state_machine_button_joystick_callback);
+    state_machine_configure_button_callbacks();
 
     current_state = STATE_START_SCREEN;
 }
@@ -269,6 +273,11 @@ void state_select_subject_wait() {
 }
 
 void state_draw_select_activity() {
+    current_activity_tutorial_page = 0;
+
+    np_clear();
+    np_write();
+
     ssd1306_clear(&disp);
     ssd1306_draw_string_by_center(&disp, disp.width/2, 4, 1, "Selecione a");
     ssd1306_draw_string_by_center(&disp, disp.width/2, 13, 1, "Atividade");
@@ -323,14 +332,31 @@ void state_select_activity_wait() {
 }
 
 void state_draw_activity_tutorial_page() {
-    int status;
+    int tutorial_over;
 
-    status = math_integer_division_draw_tutorial_page(current_activity_tutorial_page);
+    tutorial_over = math_integer_division_draw_tutorial_page(current_activity_tutorial_page);
 
-    if(status)
-        current_state = STATE_ACTIVITY_TUTORIAL_PAGE_WAIT;
-    else
+    if(tutorial_over)
         current_state = STATE_ACTIVITY_SETUP;
+    else
+        current_state = STATE_ACTIVITY_TUTORIAL_PAGE_WAIT;
+}
+
+void state_activity_setup() {
+    math_integer_division_activity_setup();
+
+    current_state = STATE_ACTIVITY_LOOP;
+}
+
+void state_activity_loop() {
+    bool activity_over;
+
+    activity_over = math_integer_division_activity_loop();
+
+    if(activity_over) {
+        state_machine_configure_button_callbacks();
+        current_state = STATE_DRAW_SELECT_ACTIVITY;
+    }
 }
 
 void run_state_machine() {
@@ -373,6 +399,14 @@ void run_state_machine() {
 
         case STATE_DRAW_ACTIVITY_TUTORIAL_PAGE:
         state_draw_activity_tutorial_page();
+        break;
+
+        case STATE_ACTIVITY_SETUP:
+        state_activity_setup();
+        break;
+
+        case STATE_ACTIVITY_LOOP:
+        state_activity_loop();
         break;
 
         default:

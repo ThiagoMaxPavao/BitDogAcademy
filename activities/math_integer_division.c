@@ -5,8 +5,8 @@
 
 extern ssd1306_t disp;
 
-static int dividend = 9;
-static int divisor = 9;
+static int dividend = 7;
+static int divisor = 3;
 static int quotient;
 static int rest;
 
@@ -19,6 +19,8 @@ static bool draw_selected = true;
 static bool grouping_mode = false; // groups by the divisor or quotient
 
 static bool redraw = true;
+
+static bool leave_activity = false;
 
 static float r, angle;
 
@@ -105,9 +107,14 @@ void draw_division_np(int dividend, int divisor, int quotient, int rest) {
     np_write();
 }
 
-void math_integer_division_button_A_callback() { }
+void math_integer_division_button_A_callback() {
+    error_sound();
+}
 
-void math_integer_division_button_B_callback() { }
+void math_integer_division_button_B_callback() {
+    leave_activity = true;
+    success_sound();
+}
 
 void math_integer_division_button_joystick_callback() {
     grouping_mode = !grouping_mode;
@@ -121,12 +128,14 @@ void math_integer_division_activity_setup() {
     draw_division_ssd1306(&disp, dividend, divisor, quotient, rest, false, false);
     draw_division_np(dividend, divisor, quotient, rest);
 
+    set_button_A_callback(math_integer_division_button_A_callback);
+    set_button_B_callback(math_integer_division_button_B_callback);
     set_button_joystick_callback(math_integer_division_button_joystick_callback);
 
     add_repeating_timer_ms(500, switch_draw_selected_and_redraw_callback, NULL, &switch_draw_selected_and_redraw_timer);
 }
 
-void math_integer_division_activity_loop() {
+bool math_integer_division_activity_loop() {
     joystick_get_RA(&r, &angle);
 
     if(r > 0.9) joystick_extended = true;
@@ -186,9 +195,11 @@ void math_integer_division_activity_loop() {
     last_joystick_extended = joystick_extended;
 
     sleep_ms(20);
+
+    return leave_activity;
 }
 
-int math_integer_division_draw_tutorial_page(int page_number) {
+bool math_integer_division_draw_tutorial_page(int page_number) {
     ssd1306_clear(&disp);
 
     switch(page_number) {
@@ -336,9 +347,9 @@ int math_integer_division_draw_tutorial_page(int page_number) {
         break;
 
         default:
-        return 0;
+        return true;
     }
 
     ssd1306_show(&disp);
-    return 1;
+    return false;
 }

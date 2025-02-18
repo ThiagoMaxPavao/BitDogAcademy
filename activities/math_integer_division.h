@@ -16,7 +16,7 @@
 #include "acme_5_outlines_font.h"
 
 void math_integer_division_activity_setup();
-void math_integer_division_activity_loop();
-int math_integer_division_draw_tutorial_page(int page_number);
+bool math_integer_division_activity_loop();
+bool math_integer_division_draw_tutorial_page(int page_number);
 
 #endif // MATH_INTEGER_DIVISION_ACTIVITY_H
