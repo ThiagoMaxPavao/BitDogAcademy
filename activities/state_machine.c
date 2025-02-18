@@ -29,6 +29,12 @@
 
 // Variáveis globais
 ssd1306_t disp;
+const char *subjects[] = {"Matematica", "Portugues", "Ciencias", "Geografia", "Historia"};
+const uint n_subjects = 5;
+
+// Variáveis estáticas
+static int selected_subject = 0;
+static int selected_activity = 0;
 
 // Estado atual
 static state_t current_state = STATE_INIT;
@@ -38,6 +44,12 @@ void state_machine_button_A_callback() {
         case STATE_USAGE_TUTORIAL_WAIT:
         current_state = STATE_START_SCREEN;
         success_sound();
+        break;
+
+        case STATE_SELECT_SUBJECT_WAIT:
+        current_state = STATE_SHOW_USAGE_TUTORIAL;
+        success_sound();
+        break;
 
         default:
         error_sound();
@@ -47,8 +59,13 @@ void state_machine_button_A_callback() {
 
 void state_machine_button_B_callback() {
     switch (current_state) {
-        case STATE_START_SCREEN_WAIT_LOOP:
+        case STATE_START_SCREEN_WAIT:
         current_state = STATE_SHOW_USAGE_TUTORIAL;
+        success_sound();
+        break;
+
+        case STATE_USAGE_TUTORIAL_WAIT:
+        current_state = STATE_DRAW_SELECT_SUBJECT;
         success_sound();
         break;
 
@@ -105,12 +122,12 @@ void state_start_screen() {
 
     start_song();
 
-    state_start_screen_wait_loop(true); // reset animation
+    state_start_screen_wait(true); // reset animation
 
-    current_state = STATE_START_SCREEN_WAIT_LOOP;
+    current_state = STATE_START_SCREEN_WAIT;
 }
 
-void state_start_screen_wait_loop(bool reset) {
+void state_start_screen_wait(bool reset) {
     static uint a = 0;
     static float l = 0;
 
@@ -150,6 +167,60 @@ void state_show_usage_tutorial() {
     current_state = STATE_USAGE_TUTORIAL_WAIT;
 }
 
+void state_draw_select_subject() {
+    ssd1306_clear(&disp);
+    ssd1306_draw_string_by_center(&disp, disp.width/2, 4, 1, "Selecione a");
+    ssd1306_draw_string_by_center(&disp, disp.width/2, 13, 1, "Disciplina");
+
+    int previous = selected_subject-1;
+    int next = selected_subject+1;
+
+    if(previous < 0) previous = n_subjects-1;
+    if(next == n_subjects) next = 0;
+
+    ssd1306_draw_string(&disp, 16, 32, 1, subjects[previous]);
+    ssd1306_draw_char(&disp, 8, 42, 1, '>');
+    ssd1306_draw_string(&disp, 16, 42, 1, subjects[selected_subject]);
+    ssd1306_draw_string(&disp, 16, 52, 1, subjects[next]);
+
+    ssd1306_show(&disp);
+
+    current_state = STATE_SELECT_SUBJECT_WAIT;
+}
+
+void state_select_subject_wait() {
+    static bool joystick_extended = false;
+    static bool last_joystick_extended = false;
+    float r, angle;
+
+    joystick_get_RA(&r, &angle);
+
+    if(r > 0.9) joystick_extended = true;
+    else if(r < 0.8) joystick_extended = false;
+
+    if(joystick_extended && !last_joystick_extended) {
+        if(angle_difference(angle, M_PI_2) < M_PI_4) {
+            selected_subject--;
+            if(selected_subject < 0) selected_subject = n_subjects-1;
+            current_state = STATE_DRAW_SELECT_SUBJECT;
+            simple_success_sound();
+        } 
+        else if(angle_difference(angle, 3*M_PI_2) < M_PI_4){
+            selected_subject++;
+            if(selected_subject == n_subjects) selected_subject = 0;
+            current_state = STATE_DRAW_SELECT_SUBJECT;
+            simple_success_sound();
+        }
+        else {
+            error_sound();
+        }
+    }
+
+    last_joystick_extended = joystick_extended;
+
+    sleep_ms(20);
+}
+
 void run_state_machine() {
     switch (current_state) {
         case STATE_INIT:
@@ -164,12 +235,20 @@ void run_state_machine() {
         state_start_screen();
         break;
 
-        case STATE_START_SCREEN_WAIT_LOOP:
-        state_start_screen_wait_loop(false);
+        case STATE_START_SCREEN_WAIT:
+        state_start_screen_wait(false);
         break;
 
         case STATE_SHOW_USAGE_TUTORIAL:
         state_show_usage_tutorial();
+        break;
+
+        case STATE_DRAW_SELECT_SUBJECT:
+        state_draw_select_subject();
+        break;
+
+        case STATE_SELECT_SUBJECT_WAIT:
+        state_select_subject_wait();
         break;
 
         default:

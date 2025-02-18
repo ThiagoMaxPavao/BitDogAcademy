@@ -57,6 +57,8 @@
         "state_machine.h": "c",
         "bubblesstandard_font.h": "c",
         "acme_5_outlines_font.h": "c",
-        "random": "c"
+        "random": "c",
+        "buttons.h": "c",
+        "pwm.h": "c"
     }
 }
