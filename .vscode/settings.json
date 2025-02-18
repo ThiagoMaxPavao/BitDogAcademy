@@ -49,6 +49,10 @@
         "stdint.h": "c",
         "adc.h": "c",
         "limits": "c",
-        "buzzer.h": "c"
+        "buzzer.h": "c",
+        "string.h": "c",
+        "math_integer_division.h": "c",
+        "util.h": "c",
+        "tests.h": "c"
     }
 }
