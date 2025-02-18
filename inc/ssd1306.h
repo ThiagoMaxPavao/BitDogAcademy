@@ -273,4 +273,15 @@ void ssd1306_draw_string_with_font(ssd1306_t *p, uint32_t x, uint32_t y, uint32_
 */
 void ssd1306_draw_string(ssd1306_t *p, uint32_t x, uint32_t y, uint32_t scale, const char *s);
 
+/**
+	@brief draw string with builtin font by center coordinates
+
+	@param[in] p : instance of display
+	@param[in] xc : x position of text center
+	@param[in] yc : y position of text center
+	@param[in] scale : scale font to n times of original size (default should be 1)
+	@param[in] s : text to draw
+*/
+void ssd1306_draw_string_by_center(ssd1306_t *p, uint32_t xc, uint32_t yc, uint32_t scale, const char *s);
+
 #endif
