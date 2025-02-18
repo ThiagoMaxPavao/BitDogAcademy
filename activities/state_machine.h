@@ -36,8 +36,12 @@ typedef enum {
     STATE_RUN_TESTS,
     STATE_START_SCREEN,
     STATE_START_SCREEN_WAIT_LOOP,
+    STATE_SHOW_USAGE_TUTORIAL,
+    STATE_USAGE_TUTORIAL_WAIT,
 
 } state_t;
+
+void state_start_screen_wait_loop(bool reset);
 
 void run_state_machine();
 
