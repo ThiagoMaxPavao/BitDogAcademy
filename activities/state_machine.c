@@ -32,6 +32,9 @@ ssd1306_t disp;
 const char *subjects[] = {"Matematica", "Portugues", "Ciencias", "Geografia", "Historia"};
 const uint n_subjects = 5;
 
+const char *activities[] = {"Divisao inteira", "Poligonos", "Equacoes"};
+const uint n_activities = 3;
+
 // Variáveis estáticas
 static int selected_subject = 0;
 static int selected_activity = 0;
@@ -51,6 +54,11 @@ void state_machine_button_A_callback() {
         success_sound();
         break;
 
+        case STATE_SELECT_ACTIVITY_WAIT:
+        current_state = STATE_DRAW_SELECT_SUBJECT;
+        success_sound();
+        break;
+
         default:
         error_sound();
         break;
@@ -67,6 +75,16 @@ void state_machine_button_B_callback() {
         case STATE_USAGE_TUTORIAL_WAIT:
         current_state = STATE_DRAW_SELECT_SUBJECT;
         success_sound();
+        break;
+
+        case STATE_SELECT_SUBJECT_WAIT:
+        if(selected_subject == 0) {
+            current_state = STATE_DRAW_SELECT_ACTIVITY;
+            success_sound();
+        }
+        else {
+            error_sound();
+        }
         break;
 
         default:
@@ -221,6 +239,60 @@ void state_select_subject_wait() {
     sleep_ms(20);
 }
 
+void state_draw_select_activity() {
+    ssd1306_clear(&disp);
+    ssd1306_draw_string_by_center(&disp, disp.width/2, 4, 1, "Selecione a");
+    ssd1306_draw_string_by_center(&disp, disp.width/2, 13, 1, "Atividade");
+
+    int previous = selected_activity-1;
+    int next = selected_activity+1;
+
+    if(previous < 0) previous = n_activities-1;
+    if(next == n_activities) next = 0;
+
+    ssd1306_draw_string(&disp, 16, 32, 1, activities[previous]);
+    ssd1306_draw_char(&disp, 8, 42, 1, '>');
+    ssd1306_draw_string(&disp, 16, 42, 1, activities[selected_activity]);
+    ssd1306_draw_string(&disp, 16, 52, 1, activities[next]);
+
+    ssd1306_show(&disp);
+
+    current_state = STATE_SELECT_ACTIVITY_WAIT;
+}
+
+void state_select_activity_wait() {
+    static bool joystick_extended = false;
+    static bool last_joystick_extended = false;
+    float r, angle;
+
+    joystick_get_RA(&r, &angle);
+
+    if(r > 0.9) joystick_extended = true;
+    else if(r < 0.8) joystick_extended = false;
+
+    if(joystick_extended && !last_joystick_extended) {
+        if(angle_difference(angle, M_PI_2) < M_PI_4) {
+            selected_activity--;
+            if(selected_activity < 0) selected_activity = n_activities-1;
+            current_state = STATE_DRAW_SELECT_ACTIVITY;
+            simple_success_sound();
+        } 
+        else if(angle_difference(angle, 3*M_PI_2) < M_PI_4){
+            selected_activity++;
+            if(selected_activity == n_activities) selected_activity = 0;
+            current_state = STATE_DRAW_SELECT_ACTIVITY;
+            simple_success_sound();
+        }
+        else {
+            error_sound();
+        }
+    }
+
+    last_joystick_extended = joystick_extended;
+
+    sleep_ms(20);
+}
+
 void run_state_machine() {
     switch (current_state) {
         case STATE_INIT:
@@ -249,6 +321,14 @@ void run_state_machine() {
 
         case STATE_SELECT_SUBJECT_WAIT:
         state_select_subject_wait();
+        break;
+
+        case STATE_DRAW_SELECT_ACTIVITY:
+        state_draw_select_activity();
+        break;
+
+        case STATE_SELECT_ACTIVITY_WAIT:
+        state_select_activity_wait();
         break;
 
         default:
