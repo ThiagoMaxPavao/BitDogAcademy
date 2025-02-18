@@ -41,6 +41,14 @@
         "neopixel.h": "c",
         "clocks.h": "c",
         "joystick.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "compare": "c",
+        "cstdint": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "stdint.h": "c",
+        "adc.h": "c",
+        "limits": "c",
+        "buzzer.h": "c"
     }
 }
