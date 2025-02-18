@@ -19,6 +19,9 @@ void buzzer_start(uint frequency, uint duration_ms);
 // Make a success sound, two beeps. Non-blocking
 void success_sound();
 
+// Make a success sound, one beep. Non-blocking
+void simple_success_sound();
+
 // Make an error sound, one beep. Non-blocking
 void error_sound();
 

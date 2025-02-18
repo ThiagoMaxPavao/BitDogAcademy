@@ -80,3 +80,7 @@ void start_song() {
     add_alarm_in_ms(150, buzzer_start_alarm, &note2, false);
     add_alarm_in_ms(300, buzzer_start_alarm, &note3, false);
 }
+
+void simple_success_sound() {
+    buzzer_start(8000, 100);
+}
