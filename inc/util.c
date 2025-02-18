@@ -11,3 +11,9 @@ int clamp(int x, int lower, int upper) {
     if(x > upper) return upper;
     return x;
 }
+
+float clampf(float x, float lower, float upper) {
+    if(x < lower) return lower;
+    if(x > upper) return upper;
+    return x;
+}
