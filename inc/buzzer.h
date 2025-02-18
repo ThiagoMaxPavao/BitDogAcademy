@@ -22,4 +22,6 @@ void success_sound();
 // Make an error sound, one beep. Non-blocking
 void error_sound();
 
+void start_song();
+
 #endif // BUZZER_H
