@@ -124,6 +124,11 @@ void state_machine_button_B_callback() {
 
 void state_machine_button_joystick_callback() {
     switch (current_state) {
+        case STATE_ACTIVITY_TUTORIAL_PAGE_WAIT:
+        current_state = STATE_ACTIVITY_SETUP;
+        success_sound();
+        break;
+
         default:
         error_sound();
         break;

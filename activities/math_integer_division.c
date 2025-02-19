@@ -228,27 +228,36 @@ bool math_integer_division_draw_tutorial_page(int page_number) {
         break;
 
         case 1:                                                 // |
+        ssd1306_draw_string(&disp, 2, 2, 1,  "Pressione B para ");
+        ssd1306_draw_string(&disp, 2, 12, 1, "passar para a proxima");
+        ssd1306_draw_string(&disp, 2, 22, 1, "pagina.");
+        ssd1306_draw_string(&disp, 2, 32, 1, "Pressione o joystick");
+        ssd1306_draw_string(&disp, 2, 42, 1, "para pular direto ");
+        ssd1306_draw_string(&disp, 2, 52, 1, "para a atividade.");
+        break;
+
+        case 2:                                                 // |
         ssd1306_draw_string(&disp, 2, 12, 1, "A divisao inteira eh");
         ssd1306_draw_string(&disp, 2, 22, 1, "uma forma de dividir");
         ssd1306_draw_string(&disp, 2, 32, 1, "sem deixar partes");
         ssd1306_draw_string(&disp, 2, 42, 1, "quebradas.");
         break;
 
-        case 2:                                                 // |
+        case 3:                                                 // |
         ssd1306_draw_string(&disp, 2, 12, 1,  "Imagine que voce tem");
         ssd1306_draw_string(&disp, 2, 22, 1, "7 balas e quer");
         ssd1306_draw_string(&disp, 2, 32, 1, "dividir igualmente");
         ssd1306_draw_string(&disp, 2, 42, 1, "entre 3 amigos.");
         break;
 
-        case 3:                                                 // |
+        case 4:                                                 // |
         ssd1306_draw_string(&disp, 2, 12, 1,  "Se voce der 2 balas");
         ssd1306_draw_string(&disp, 2, 22, 1, "para cada um, tera");
         ssd1306_draw_string(&disp, 2, 32, 1, "usado 6 balas e ");
         ssd1306_draw_string(&disp, 2, 42, 1, "sobrara 1 bala.");
         break;
 
-        case 4:                                                 // |
+        case 5:                                                 // |
         ssd1306_draw_string(&disp, 2, 2, 1,  "Estes numeros sao");
         ssd1306_draw_string(&disp, 2, 12, 1, "chamados de:");
         ssd1306_draw_string(&disp, 2, 22, 1, "- Dividendo: 7");
@@ -257,7 +266,7 @@ bool math_integer_division_draw_tutorial_page(int page_number) {
         ssd1306_draw_string(&disp, 2, 52, 1, "- Resto: 1");
         break;
 
-        case 5:                                                 // |
+        case 6:                                                 // |
         ssd1306_draw_string(&disp, 2, 2, 1,  "Outra forma de pensar");
         ssd1306_draw_string(&disp, 2, 12, 1, "na divisao eh:");
         ssd1306_draw_string(&disp, 2, 22, 1, "Quero dividir 7 balas");
@@ -266,7 +275,7 @@ bool math_integer_division_draw_tutorial_page(int page_number) {
         ssd1306_draw_string(&disp, 2, 52, 1, "amigos posso dividir?");
         break;
 
-        case 6:                                                 // |
+        case 7:                                                 // |
         ssd1306_draw_string(&disp, 2, 2, 1,  "O resultado sera 2");
         ssd1306_draw_string(&disp, 2, 12, 1, "novamente, mas desta");
         ssd1306_draw_string(&disp, 2, 22, 1, "vez representando o");
@@ -275,7 +284,7 @@ bool math_integer_division_draw_tutorial_page(int page_number) {
         ssd1306_draw_string(&disp, 2, 52, 1, "igual. Sobra uma bala");
         break;
 
-        case 7:                                                 // |
+        case 8:                                                 // |
         ssd1306_draw_string(&disp, 2, 2, 1,  "A divisao pode ser");
         ssd1306_draw_string(&disp, 2, 12, 1, "representada de forma");
         ssd1306_draw_string(&disp, 2, 22, 1, "grafica, como");
@@ -284,25 +293,25 @@ bool math_integer_division_draw_tutorial_page(int page_number) {
         ssd1306_draw_string(&disp, 2, 52, 1, "7 balas.");
         break;
 
-        case 8:
+        case 9:
         draw_division_ssd1306(&disp, 7, 3, 2, 1, false, false);
         break;
 
-        case 9:                                                 // |
+        case 10:                                                // |
         ssd1306_draw_string(&disp, 2, 12, 1,  "Nesta atividade voce");
         ssd1306_draw_string(&disp, 2, 22, 1, "visualizara a divisao");
         ssd1306_draw_string(&disp, 2, 32, 1, "dos LEDs presentes na");
         ssd1306_draw_string(&disp, 2, 42, 1, "matriz 5x5.");
         break;
 
-        case 10:                                                // |
+        case 11:                                                // |
         ssd1306_draw_string(&disp, 2, 12, 1,  "Voce controlara o");
         ssd1306_draw_string(&disp, 2, 22, 1, "valor do dividendo e");
         ssd1306_draw_string(&disp, 2, 32, 1, "do divisor, faca isso");
         ssd1306_draw_string(&disp, 2, 42, 1, "utilizando o joystick");
         break;
 
-        case 11:                                                // |
+        case 12:                                                // |
         ssd1306_draw_string(&disp, 2, 2, 1,  "Mova o joystick para");
         ssd1306_draw_string(&disp, 2, 12, 1, "a esquerda/direita");
         ssd1306_draw_string(&disp, 2, 22, 1, "para trocar o valor");
@@ -311,28 +320,28 @@ bool math_integer_division_draw_tutorial_page(int page_number) {
         ssd1306_draw_string(&disp, 2, 52, 1, " o dividendo)");
         break;
 
-        case 12:                                                // |
+        case 13:                                                // |
         ssd1306_draw_string(&disp, 2, 12, 1, "Voce sabera o valor");
         ssd1306_draw_string(&disp, 2, 22, 1, "que esta editando");
         ssd1306_draw_string(&disp, 2, 32, 1, "atentando-se a linha");
         ssd1306_draw_string(&disp, 2, 42, 1, "piscando abaixo dele.");
         break;
 
-        case 13:                                                // |
+        case 14:                                                // |
         ssd1306_draw_string(&disp, 2, 12, 1, "Mova o joystick para");
         ssd1306_draw_string(&disp, 2, 22, 1, "cima/baixo para");
         ssd1306_draw_string(&disp, 2, 32, 1, "aumentar ou diminuir");
         ssd1306_draw_string(&disp, 2, 42, 1, "o valor selecionado.");
         break;
 
-        case 14:                                                // |
+        case 15:                                                // |
         ssd1306_draw_string(&disp, 2, 12, 1, "Na matriz de LEDs,");
         ssd1306_draw_string(&disp, 2, 22, 1, "voce vera N LEDs");
         ssd1306_draw_string(&disp, 2, 32, 1, "acesos, sendo N o");
         ssd1306_draw_string(&disp, 2, 42, 1, "dividendo escolhido.");
         break;
 
-        case 15:                                                // |
+        case 16:                                                // |
         ssd1306_draw_string(&disp, 2, 2, 1,  "Eles estarao");
         ssd1306_draw_string(&disp, 2, 12, 1, "agrupados pela cor,");
         ssd1306_draw_string(&disp, 2, 22, 1, "conforme o divisor ou");
@@ -341,7 +350,7 @@ bool math_integer_division_draw_tutorial_page(int page_number) {
         ssd1306_draw_string(&disp, 2, 52, 1, "ambos os agrupamentos");
         break;
 
-        case 16:                                                // |
+        case 17:                                                // |
         ssd1306_draw_string(&disp, 2, 2, 1,  "O resto da divisao eh");
         ssd1306_draw_string(&disp, 2, 12, 1, "representado pelos ");
         ssd1306_draw_string(&disp, 2, 22, 1, "LEDs de cor branca.");
@@ -350,7 +359,7 @@ bool math_integer_division_draw_tutorial_page(int page_number) {
         ssd1306_draw_string(&disp, 2, 52, 1, "divisao foi exata.");
         break;
         
-        case 17:                                                // |
+        case 18:                                                // |
         ssd1306_draw_string(&disp, 2, 2, 1,  "Teste combinacoes");
         ssd1306_draw_string(&disp, 2, 12, 1, "e atente-se como os");
         ssd1306_draw_string(&disp, 2, 22, 1, "LEDs se comportam.");
@@ -358,7 +367,7 @@ bool math_integer_division_draw_tutorial_page(int page_number) {
         ssd1306_draw_string(&disp, 2, 42, 1, "pressionar o joystick");
         break;
 
-        case 18:                                                // |
+        case 19:                                                // |
         ssd1306_draw_string(&disp, 2, 12, 1, "Quando terminar,");
         ssd1306_draw_string(&disp, 2, 22, 1, "Pressione o botao B");
         ssd1306_draw_string(&disp, 2, 32, 1, "para sair da");
