@@ -5,34 +5,44 @@
 
 extern ssd1306_t disp;
 
+// Variaveis da divisao inteira
 static int dividend = 7;
 static int divisor = 3;
 static int quotient;
 static int rest;
 
+// Controle do estado do joystick
+// extended = inclinado perto do máximo possível
 static bool joystick_extended = false;
 static bool last_joystick_extended = false;
 
+// Controle do que está sendo editado pelo usuário: Dividendo ou o divisor
 static int selected = SELECT_DIVIDEND;
 
+// Controle se deve desenhar a linha abaixo do valor selecionado
+// Alternado pelo timer de repeticao para fazer a linha piscar
 static bool draw_selected = true;
-static bool grouping_mode = false; // groups by the divisor or quotient
 
+// Modo de agrupamento -> *Quociente* grupos de *divisor* LEDs ou *divisor* grupos de *quociente* LEDs
+static bool grouping_mode = false;
+
+// Indica se é necessário redesenhar o display e a matriz de LEDs
 static bool redraw = true;
 
+// Indica se a atividade terminou -> Retornado pela função de loop
 static bool leave_activity = false;
-
-static float r, angle;
 
 static struct repeating_timer switch_draw_selected_and_redraw_timer;
 
+// Timer de repeticao para alternar o desenho da linha abaixo do valor selecionado
 bool switch_draw_selected_and_redraw_callback(struct repeating_timer *t) {
     draw_selected = !draw_selected;
     redraw = true;
     return true;
 }
 
-// false = dividend, true = divisor
+// Desenha uma divisao no formato grafico no display OLED
+// Desenha uma linha em baixo do valor do dividendo e/ou do divisor, dependendo dos parametros passados
 void draw_division_ssd1306(ssd1306_t *disp, int dividend, int divisor, int quotient, int rest, bool dividend_selected, bool divisor_selected) {
     char buffer[3]; // Buffer para a strings formatadas
 
@@ -71,6 +81,7 @@ void draw_division_ssd1306(ssd1306_t *disp, int dividend, int divisor, int quoti
     ssd1306_show(disp);
 }
 
+// Desenha o agrupamento de LEDs na matriz de LEDs 5x5
 void draw_division_np(int dividend, int divisor, int quotient, int rest) {
     int count = 0;
 
@@ -107,15 +118,21 @@ void draw_division_np(int dividend, int divisor, int quotient, int rest) {
     np_write();
 }
 
+// Função de callback para o botão A
+// Botão sem função na atividade
 void math_integer_division_button_A_callback() {
     error_sound();
 }
 
+// Função de callback para o botão B
+// Botão para sair da atividade
 void math_integer_division_button_B_callback() {
     leave_activity = true;
     success_sound();
 }
 
+// Função de callback para o joystick
+// Alterna entre os modos de agrupamento de LEDs
 void math_integer_division_button_joystick_callback() {
     grouping_mode = !grouping_mode;
     redraw = true;
@@ -136,6 +153,8 @@ void math_integer_division_activity_setup() {
 }
 
 bool math_integer_division_activity_loop() {
+    float r, angle;
+
     joystick_get_RA(&r, &angle);
 
     if(r > 0.9) joystick_extended = true;
@@ -209,7 +228,7 @@ bool math_integer_division_draw_tutorial_page(int page_number) {
         break;
 
         case 1:                                                 // |
-        ssd1306_draw_string(&disp, 2, 12, 1,  "A divisao inteira eh");
+        ssd1306_draw_string(&disp, 2, 12, 1, "A divisao inteira eh");
         ssd1306_draw_string(&disp, 2, 22, 1, "uma forma de dividir");
         ssd1306_draw_string(&disp, 2, 32, 1, "sem deixar partes");
         ssd1306_draw_string(&disp, 2, 42, 1, "quebradas.");
