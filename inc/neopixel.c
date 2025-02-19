@@ -4,6 +4,7 @@ static PIO np_pio;
 static uint sm;
 static npLED_t leds[LED_COUNT];
 
+// Configuração da maquina de estados PIO para controle de LEDs WS2818B
 void ws2818b_program_init(PIO pio, uint sm, uint offset, uint pin, float freq) {
     pio_gpio_init(pio, pin);
 
@@ -35,6 +36,8 @@ void np_init(uint pin) {
     np_write();
 }
 
+// Inverte os bits de um byte
+// Necessário porque a máquina PIO lê os bits na ordem contrária à necessária
 uint8_t reverse_bits(uint8_t byte) {
     byte = (byte & 0xF0) >> 4 | (byte & 0x0F) << 4;
     byte = (byte & 0xCC) >> 2 | (byte & 0x33) << 2;
@@ -65,6 +68,7 @@ void np_write() {
     sleep_us(100);
 }
 
+// Retorna o índice do LED na matriz a partir das coordenadas x e y
 int get_index(int x, int y) {
     return (y % 2 != 0) ? (y * 5 + x) : (y * 5 + (4 - x));
 }
@@ -74,6 +78,7 @@ void np_set_led_rgb_xy(uint8_t x, uint8_t y, uint8_t r, uint8_t g, uint8_t b) {
     np_set_led_rgb_index(index, r, g, b);
 }
 
+// Para conversão entre HSL e RGB
 void hue_to_rgb(double p, double q, double t, double *color) {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;

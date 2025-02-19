@@ -5,10 +5,11 @@
 #include "state_machine.h"
 
 int main() {
+    // Inicializa a comunicação serial para permitir o uso de printf para depuração.
     stdio_init_all();
-    // sleep_ms(5000);
 
     while(true) {
+        // Executa a máquina de estados do programa continuamente
         run_state_machine();
     }
 

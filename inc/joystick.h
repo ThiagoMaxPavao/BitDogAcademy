@@ -5,13 +5,15 @@
 #include "hardware/adc.h"
 #include <math.h>
 
-// Function to initialize the joystick on specified X and Y pins
+// Inicializa módulo ADC e pinos GPIO com a função de ADC
 void joystick_init(uint X_pin, uint Y_pin);
 
-// Function to get X and Y values (-1 to 1 range)
+// Lê valores dos pinos do joystick e converte para coordenadas X e Y
+// ranges de -1 a 1
 void joystick_get_XY(float *x, float *y);
 
-// Function to get radial distance (r) and angle (θ in radians)
+// Lê valores dos pinos do joystick e converte para raio e ângulo
+// range raio 0 a 1, ângulo -PI a PI
 void joystick_get_RA(float *r, float *angle);
 
 #endif // JOYSTICK_H

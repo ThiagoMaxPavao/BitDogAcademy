@@ -1,18 +1,24 @@
 // buttons.c
 #include "buttons.h"
 
+// Tempo da primeira borda após o último período de debounce
+// para que a borda seja considerada válida a diferença deve
+// ser maior do que DEBOUNCE_TIME.
 volatile int64_t button_A_main_edge_time = 0;
 volatile int64_t button_B_main_edge_time = 0;
 volatile int64_t button_joystick_main_edge_time = 0;
 
+// Pinos GPIO dos botões
 static int button_A_pin;
 static int button_B_pin;
 static int button_joystick_pin;
 
+// Referência para o callback de cada botão
 static button_callback_t button_A_callback = NULL;
 static button_callback_t button_B_callback = NULL;
 static button_callback_t button_joystick_callback = NULL;
 
+// Funcões de configuração do callback
 void set_button_A_callback(button_callback_t callback) {
     button_A_callback = callback;
 }
@@ -43,6 +49,8 @@ void process_button_joystick() {
     }
 }
 
+// Rotina de interrupção para os botões
+// Realiza debounce e chama a função de callback apenas na borda de descida (pressionamento do botão)
 void gpio_callback(uint gpio, uint32_t events) {
     int64_t now = to_ms_since_boot(get_absolute_time());
 

@@ -22,10 +22,6 @@
 #define BUTTON_B 6
 #define BUTTON_JOYSTICK 22
 
-// Fonte para a tela inicial
-#include "acme_5_outlines_font.h"
-#include "bubblesstandard_font.h"
-#include "BMSPA_font.h"
 
 // Variáveis globais
 ssd1306_t disp;
@@ -35,7 +31,7 @@ const uint n_subjects = 5;
 const char *activities[] = {"Divisao inteira", "Poligonos", "Equacoes"};
 const uint n_activities = 3;
 
-// Variáveis estáticas
+// Variáveis estáticas - controle da selecao de atividade e andamento do tutorial
 static int selected_subject = 0;
 static int selected_activity = 0;
 static int current_activity_tutorial_page = 0;
@@ -135,12 +131,14 @@ void state_machine_button_joystick_callback() {
     }
 }
 
+// Configura as funções de callback dos botões
 void state_machine_configure_button_callbacks() {
     set_button_A_callback(state_machine_button_A_callback);
     set_button_B_callback(state_machine_button_B_callback);
     set_button_joystick_callback(state_machine_button_joystick_callback);
 }
 
+// Estado de inicialização dos periféricos
 void state_init() {
     // Inicializa os periféricos
     disp.external_vcc = false;
@@ -160,6 +158,7 @@ void state_init() {
     current_state = STATE_START_SCREEN;
 }
 
+// Estado de teste dos periféricos
 void state_run_tests() {
     test_ssd1306(&disp);
     test_np();
@@ -168,6 +167,7 @@ void state_run_tests() {
     test_buttons();
 }
 
+// Estado de transição para a tela inicial
 void state_start_screen() {
     ssd1306_clear(&disp);
     ssd1306_draw_string_with_font(&disp, 16, 2, 2, BMSPA_font, "BITDOG");
@@ -183,6 +183,7 @@ void state_start_screen() {
     current_state = STATE_START_SCREEN_WAIT;
 }
 
+// Estado de animação da tela inicial
 void state_start_screen_wait(bool reset) {
     static uint a = 0;
     static float l = 0;
@@ -208,6 +209,7 @@ void state_start_screen_wait(bool reset) {
     sleep_ms(60);
 }
 
+// Estado de transição para tela de instruções de uso
 void state_show_usage_tutorial() {
     np_clear();
     np_write();
@@ -223,6 +225,7 @@ void state_show_usage_tutorial() {
     current_state = STATE_USAGE_TUTORIAL_WAIT;
 }
 
+// Estado de transição para a seleção de disciplina
 void state_draw_select_subject() {
     ssd1306_clear(&disp);
     ssd1306_draw_string_by_center(&disp, disp.width/2, 4, 1, "Selecione a");
@@ -244,6 +247,7 @@ void state_draw_select_subject() {
     current_state = STATE_SELECT_SUBJECT_WAIT;
 }
 
+// Estado de seleção de disciplina
 void state_select_subject_wait() {
     static bool joystick_extended = false;
     static bool last_joystick_extended = false;
@@ -277,6 +281,7 @@ void state_select_subject_wait() {
     sleep_ms(20);
 }
 
+// Estado de transição para seleção da atividade
 void state_draw_select_activity() {
     current_activity_tutorial_page = 0;
 
@@ -303,6 +308,7 @@ void state_draw_select_activity() {
     current_state = STATE_SELECT_ACTIVITY_WAIT;
 }
 
+// Estado de seleção de atividade
 void state_select_activity_wait() {
     static bool joystick_extended = false;
     static bool last_joystick_extended = false;
@@ -336,6 +342,7 @@ void state_select_activity_wait() {
     sleep_ms(20);
 }
 
+// Estado de transição para uma página de tutorial da atividade
 void state_draw_activity_tutorial_page() {
     int tutorial_over;
 
@@ -347,12 +354,14 @@ void state_draw_activity_tutorial_page() {
         current_state = STATE_ACTIVITY_TUTORIAL_PAGE_WAIT;
 }
 
+// Estado de configuração da atividade
 void state_activity_setup() {
     math_integer_division_activity_setup();
 
     current_state = STATE_ACTIVITY_LOOP;
 }
 
+// Estado de loop da atividade
 void state_activity_loop() {
     bool activity_over;
 

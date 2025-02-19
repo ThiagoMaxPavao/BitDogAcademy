@@ -13,6 +13,11 @@
 // Biblioteca para o display OLED
 #include "ssd1306.h"
 
+// Fontes
+#include "acme_5_outlines_font.h"
+#include "bubblesstandard_font.h"
+#include "BMSPA_font.h"
+
 // Biblioteca para o Neopixel - Matrix de LEDs RGB
 #include "neopixel.h"
 
@@ -31,6 +36,7 @@
 // Funcoes da atividade de matemática - divisão inteira
 #include "math_integer_division.h"
 
+// Maquina de estados
 typedef enum {
     STATE_INIT,
     STATE_RUN_TESTS,
@@ -46,11 +52,12 @@ typedef enum {
     STATE_ACTIVITY_TUTORIAL_PAGE_WAIT,
     STATE_ACTIVITY_SETUP,
     STATE_ACTIVITY_LOOP
-
 } state_t;
 
+// Funcao de animacao da tela inicial
 void state_start_screen_wait(bool reset);
 
+// Executa a máquina de estados
 void run_state_machine();
 
 #endif // STATE_MACHINE_H

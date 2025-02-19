@@ -59,6 +59,7 @@
         "acme_5_outlines_font.h": "c",
         "random": "c",
         "buttons.h": "c",
-        "pwm.h": "c"
+        "pwm.h": "c",
+        "time.h": "c"
     }
 }
