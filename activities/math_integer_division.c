@@ -139,8 +139,14 @@ void math_integer_division_button_joystick_callback() {
 }
 
 void math_integer_division_activity_setup() {
+    dividend = 7;
+    divisor = 3;
     quotient = dividend / divisor;
     rest = dividend % divisor;
+
+    leave_activity = false;
+    grouping_mode = false;
+    redraw = true;
 
     draw_division_ssd1306(&disp, dividend, divisor, quotient, rest, false, false);
     draw_division_np(dividend, divisor, quotient, rest);
