@@ -1,6 +1,14 @@
 # BitDogAcademy
-Projeto final do programa EmbarcaTech: uma plataforma interativa com visualizações e minigames para ensinar conceitos básicos do ensino fundamental.
 
-Documentação em https://docs.google.com/document/d/1Y5T07P8tk9wgpiRu8o5c3_4_7WWCqSvCT_-G4AARzdE/edit?usp=sharing 
+## Sobre o Projeto
+BitDogAcademy é uma plataforma interativa desenvolvida no programa EmbarcaTech para auxiliar no ensino fundamental. A proposta combina visualizações dinâmicas e atividades visuais e interativas educativas para tornar o aprendizado mais envolvente e acessível.
 
-Vídeo de apresentação em https://www.youtube.com/watch?v=xHCL8hOfLEQ 
+## Recursos
+- Interface intuitiva e acessível
+- Atividades visuais e interativas
+- Feedback visual e sonoro
+- Portabilidade e autonomia
+
+## Links
+- **Documentação**: [Acesse aqui](https://docs.google.com/document/d/1Y5T07P8tk9wgpiRu8o5c3_4_7WWCqSvCT_-G4AARzdE/edit?usp=sharing)
+- **Vídeo de Apresentação**: [Assista aqui](https://www.youtube.com/watch?v=xHCL8hOfLEQ)
